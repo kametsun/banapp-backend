@@ -27,3 +27,20 @@ Content-Type: application/json
 {
   "coin": 1000
 }
+
+###
+
+
+POST http://127.0.0.1:8000/pets/
+Content-Type: application/json
+
+{
+  "user_id": 3,
+  "name": "test-pets"
+}
+
+###
+
+
+GET http://127.0.0.1:8000/pets
+Accept: application/json

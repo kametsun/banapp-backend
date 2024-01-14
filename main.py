@@ -1,10 +1,12 @@
 from fastapi import FastAPI, HTTPException, Path
 from DBHelper import execute_query
-from repositories.User import User, CoinUpdate
+from repositories.Pet import PetCreate
+from repositories.User import UserCreate, CoinUpdate
 
 app = FastAPI()
 
 
+# -------------------- User --------------------
 # テーブル全件取得
 @app.get("/{table_name}/")
 def read_table_all(table_name: str):
@@ -16,7 +18,7 @@ def read_table_all(table_name: str):
 
 # users挿入
 @app.post("/users/")
-def create_users(user: User, response_model=int):
+def create_users(user: UserCreate, response_model=int):
     query = "INSERT INTO banapp.users (name, coin, cigarette_price) VALUES (%s, %s, %s)"
     values = (user.name, user.coin, user.cigarette_price)
     return execute_query(query, values, fetch=False, return_id=True)
@@ -31,6 +33,14 @@ def update_user_coin(coin_data: CoinUpdate, user_id: int = Path(..., description
         return {"message": f"User with id {user_id} coin updated successfully"}
     else:
         raise HTTPException(status_code=404, detail=f"User with id {user_id} not found")
+
+
+# -------------------- Pet --------------------
+@app.post("/pets/", response_model=dict)
+def create_pet(pet_data: PetCreate):
+    query = "INSERT INTO banapp.pets (user_id, name, hunger) VALUES (%s, %s, %s)"
+    values = (pet_data.user_id, pet_data.name, pet_data.hunger)
+    return execute_query(query, values, fetch=False, return_id=True)
 
 @app.get("/")
 async def root():

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class User(BaseModel):
+class UserCreate(BaseModel):
     name: str
     coin: int = 0
     cigarette_price: int

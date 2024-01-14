@@ -74,10 +74,10 @@ def insert_test_data_into_users():
 
             # 挿入
             insert_users_query = """
-            INSERT INTO users (name, coin, cigarette_price) VALUES
-            ('ユーザ1', 0, 500),
-            ('ユーザ2', 135, 550),
-            ('ユーザ3', 222, 400)
+            INSERT INTO users (name, coin, cigarette_price, cigarette_per_day) VALUES
+            ('ユーザ1', 0, 500, 12),
+            ('ユーザ2', 135, 550, 30),
+            ('ユーザ3', 222, 400, 21)
             """
 
             cursor.execute(insert_users_query)

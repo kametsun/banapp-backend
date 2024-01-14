@@ -28,6 +28,7 @@ class User(Base):
     name = Column(String(500), nullable=False)
     coin = Column(Integer, default=0, nullable=False)
     cigarette_price = Column(Integer, nullable=False)
+    cigarette_per_day = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, default=func.now())
 
 

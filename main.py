@@ -1,9 +1,20 @@
 from fastapi import FastAPI, HTTPException, Path
+from sqlalchemy.dialects.mssql import json
+
 from DBHelper import execute_query
 from repositories.Pet import PetCreate
 from repositories.User import UserCreate, CoinUpdate
 
 app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
+@app.get("/hello/{name}")
+async def say_hello(name: str):
+    return {"message": f"Hello {name}"}
 
 
 # -------------------- User --------------------
@@ -19,9 +30,15 @@ def read_table_all(table_name: str):
 # users挿入
 @app.post("/users/")
 def create_users(user: UserCreate, response_model=int):
-    query = "INSERT INTO banapp.users (name, coin, cigarette_price) VALUES (%s, %s, %s)"
-    values = (user.name, user.coin, user.cigarette_price)
+    query = "INSERT INTO banapp.users (name, coin, cigarette_price, cigarette_per_day) VALUES (%s, %s, %s, %s)"
+    values = (user.name, user.coin, user.cigarette_price, user.cigarette_per_day)
     return execute_query(query, values, fetch=False, return_id=True)
+
+@app.get("/users/{user_id}")
+def read_user(user_id: int):
+    query = "SELECT * FROM banapp.users WHERE id=%s"
+    values = (user_id,)
+    return execute_query(query, values, fetch=True)
 
 # ユーザのコイン変更
 @app.patch("/users/{user_id}/coin", response_model=dict)
@@ -41,12 +58,3 @@ def create_pet(pet_data: PetCreate):
     query = "INSERT INTO banapp.pets (user_id, name, hunger) VALUES (%s, %s, %s)"
     values = (pet_data.user_id, pet_data.name, pet_data.hunger)
     return execute_query(query, values, fetch=False, return_id=True)
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}

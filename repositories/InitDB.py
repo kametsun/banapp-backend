@@ -159,9 +159,10 @@ def insert_test_data_into_achievements():
             VALUES (%s, %s, %s)
             """
             test_data = [
-                ('達成1', '説明1', 100),
-                ('達成2', '説明2', 200),
-                ('達成3', '説明3', 300)
+                ('餌やりをしてみよう', "Let's feed them!", 50),
+                ('3日連続餌やりをしよう', "Let's feed them 3days in a row!", 100),
+                ('5日連続餌やりをしよう', "Let's feed them three 5days in a row!", 150),
+                ('1週間餌やりをしよう', "Let's feed them for a week.", 200)
             ]
             cursor.executemany(insert_query, test_data)
             connection.commit()
@@ -187,9 +188,11 @@ def insert_test_data_into_items():
             VALUES (%s, %s, %s)
             """
             test_data = [
-                ('アイテム1', 100, 10),
-                ('アイテム2', 200, 20),
-                ('アイテム3', 300, 30)
+                ('クロワッサン', 30, 30),
+                ('アイスクリーム', 40, 40),
+                ('ハンバーガー', 60, 80),
+                ('ラーメン', 80, 80),
+                ('ケーキ', 100, 100)
             ]
             cursor.executemany(insert_query, test_data)
             connection.commit()
@@ -202,5 +205,5 @@ def insert_test_data_into_items():
             close_db_connection(connection)
 
 
-#drop_database()
-#create_database()
+drop_database()
+create_database()

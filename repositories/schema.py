@@ -101,6 +101,28 @@ def update_created_at_default(table_name, column_name):
             cursor.close()
             close_db_connection(connection)
 
+def update_column_at_pets_death_at():
+    load_dotenv()
+    db_name = os.getenv('DB_NAME')
+    try:
+        connection = create_db_connection()
+        if connection is not None:
+            cursor = connection.cursor()
+            cursor.execute(f"USE {db_name}")
+
+            # カラムを変更
+            aleter_table_query = """
+            ALTER TABLE pets MODIFY death_at TIMESTAMP NULL;
+            """
+            cursor.execute(aleter_table_query)
+            print(f"Column death_at in table pets updated successfully")
+    except Error as error:
+            print(f"Failed to update death_at column in table pets {error}")
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            close_db_connection(connection)
 
 def update_updated_at_column(table_name, column_name):
     load_dotenv()
@@ -120,7 +142,7 @@ def update_updated_at_column(table_name, column_name):
     except Error as error:
         print(f"Failed to update '{column_name}' column in table '{table_name}' {error}")
     finally:
-        if connection is not None and connection.is_connected():
+        if connection.is_connected():
             cursor.close()
             close_db_connection(connection)
 
@@ -132,6 +154,7 @@ update_created_at_default('pets', 'created_at')
 update_created_at_default('pets', 'updated_at')
 update_updated_at_column('pets', 'updated_at')
 update_created_at_default('Histories', 'created_at')
+update_column_at_pets_death_at()
 
 insert_test_data_into_users()
 insert_test_data_into_pets()

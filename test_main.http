@@ -50,3 +50,24 @@ Content-Type: application/json
 
 GET http://127.0.0.1:8000/pets
 Accept: application/json
+
+###
+
+
+GET http://127.0.0.1:8000/pets/3
+Accept: application/json
+
+###
+
+
+PATCH http://127.0.0.1:8000/pets/3/hunger
+Content-Type: application/json
+
+{
+  "hunger": 44
+}
+
+###
+
+GET http://127.0.0.1:8000/pets/1/death
+Accept: application/json

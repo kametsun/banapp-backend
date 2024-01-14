@@ -1,7 +1,10 @@
 from datetime import datetime
+from typing import List
 
 from fastapi import FastAPI, HTTPException, Path
 from DBHelper import execute_query
+from repositories.Achievement import Achievement
+from repositories.History import History, HistoryCreate
 from repositories.Pet import PetCreate, HungerUpdate
 from repositories.User import UserCreate, CoinUpdate
 
@@ -55,6 +58,21 @@ def update_user_coin(coin_data: CoinUpdate, user_id: int = Path(..., description
         raise HTTPException(status_code=404, detail=f"User with id {user_id} not found")
 
 
+@app.get("/users/{user_id}/histories", response_model=List[History])
+def get_user_histories(user_id: int):
+    # SQLクエリを作成
+    query = "SELECT * FROM banapp.histories WHERE user_id=%s"
+    values = (user_id,)
+
+    # クエリ実行
+    results = execute_query(query, values, fetch=True)
+
+    if not results:
+        raise HTTPException(status_code=404, detail=f"No histories found for user with id {user_id}")
+
+    return results
+
+
 # -------------------- Pet --------------------
 @app.post("/pets/", response_model=dict)
 def create_pet(pet_data: PetCreate):
@@ -69,19 +87,6 @@ def read_user(pet_id: int):
     query = "SELECT * FROM banapp.pets WHERE id=%s"
     values = (pet_id,)
     return execute_query(query, values, fetch=True)
-
-
-# 空腹度変更
-@app.patch("/pets/{pet_id}/hunger", response_model=dict)
-def update_pet_hunger(hunger_data: HungerUpdate, pet_id: int = Path(..., description="The ID of the pet to update")):
-    query = "UPDATE banapp.pets SET hunger = %s WHERE id=%s"
-    values = (hunger_data.hunger, pet_id)
-    result = execute_query(query, values, fetch=False)
-    if result.get("message"):
-        return {"message": f"Pet with id {pet_id} hunger updated successfully"}
-    else:
-        raise HTTPException(status_code=404, detail=f"Pet with id {pet_id} not found")
-
 
 @app.get("/pets/{pet_id}/death", response_model=dict)
 def register_pet_death(pet_id: int):
@@ -100,3 +105,34 @@ def register_pet_death(pet_id: int):
         return {"death_time": death_time}
     else:
         raise HTTPException(status_code=404, detail=f"Pet with id {pet_id} not found")
+
+
+# 空腹度変更
+@app.patch("/pets/{pet_id}/hunger", response_model=dict)
+def update_pet_hunger(hunger_data: HungerUpdate, pet_id: int = Path(..., description="The ID of the pet to update")):
+    query = "UPDATE banapp.pets SET hunger = %s WHERE id=%s"
+    values = (hunger_data.hunger, pet_id)
+    result = execute_query(query, values, fetch=False)
+    if result.get("message"):
+        return {"message": f"Pet with id {pet_id} hunger updated successfully"}
+    else:
+        raise HTTPException(status_code=404, detail=f"Pet with id {pet_id} not found")
+
+
+# -------------------- History --------------------
+
+@app.post("/histories/")
+def create_history(history: HistoryCreate):
+    query = "INSERT INTO banapp.histories (user_id, pet_id, more_money) VALUES (%s, %s, %s)"
+    values = (history.user_id, history.pet_id, history.more_money)
+    return execute_query(query, values, fetch=False)
+
+# -------------------- Achievement --------------------
+@app.post("/achievements/")
+def create_achievement(achievement: Achievement):
+    query = "INSERT INTO banapp.get_achievements (user_id, achievement_id) VALUES (%s, %s)"
+    values = (achievement.user_id, achievement.achievement_id)
+    return execute_query(query, values, fetch=False)
+
+
+# -------------------- Item --------------------

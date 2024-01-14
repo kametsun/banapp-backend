@@ -54,7 +54,7 @@ Accept: application/json
 ###
 
 
-GET http://127.0.0.1:8000/pets/3
+GET http://127.0.0.1:8000/pets/1
 Accept: application/json
 
 ###
@@ -69,5 +69,41 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/pets/1/death
+GET http://127.0.0.1:8000/pets/3/death
+Accept: application/json
+
+
+###------------------------------ History ------------------------------
+GET http://127.0.0.1:8000/users/1/histories
+Accept: application/json
+
+
+
+###
+POST http://127.0.0.1:8000/histories/
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "pet_id": 1,
+  "more_money": 444444
+}
+
+
+###
+GET http://127.0.0.1:8000/achievements/
+Accept: application/json
+
+
+###
+POST http://127.0.0.1:8000/achievements/
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "achievement_id": 2
+}
+
+###
+GET http://127.0.0.1:8000/items/
 Accept: application/json

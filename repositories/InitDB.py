@@ -202,5 +202,5 @@ def insert_test_data_into_items():
             close_db_connection(connection)
 
 
-# drop_database()
-# create_database()
+#drop_database()
+#create_database()

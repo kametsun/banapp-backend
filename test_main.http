@@ -9,3 +9,21 @@ GET http://127.0.0.1:8000/hello/User
 Accept: application/json
 
 ###
+
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+  "name": "test-user2",
+  "cigarette_price": 500
+}
+
+###
+
+
+PATCH http://127.0.0.1:8000/users/4/coin
+Content-Type: application/json
+
+{
+  "coin": 1000
+}

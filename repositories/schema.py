@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Foreign
 from sqlalchemy.orm import declarative_base
 from dotenv import load_dotenv
 
-from repositories.InitDB import create_db_connection, close_db_connection, insert_test_data_into_users, \
+from InitDB import create_db_connection, close_db_connection, insert_test_data_into_users, \
     insert_test_data_into_pets, insert_test_data_into_histories, insert_test_data_into_achievements, \
     insert_test_data_into_items
 

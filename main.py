@@ -41,7 +41,7 @@ def create_users(user: UserCreate, response_model=int):
 
 @app.get("/users/{user_id}")
 def read_user(user_id: int):
-    query = "SELECT * FROM banapp.users WHERE id=%s"
+    query = "SELECT id, name, coin, cigarette_price, cigarette_per_day FROM banapp.users WHERE id=%s"
     values = (user_id,)
     return execute_query(query, values, fetch=True)
 

@@ -6,7 +6,7 @@ from DBHelper import execute_query
 from repositories.Achievement import Achievement
 from repositories.History import History, HistoryCreate
 from repositories.Pet import PetCreate, HungerUpdate
-from repositories.User import UserCreate, CoinUpdate
+from repositories.User import UserCreate, CoinUpdate, User
 
 app = FastAPI()
 
